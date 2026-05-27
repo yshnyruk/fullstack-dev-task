@@ -1,58 +1,110 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Full Stack Dev Task
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel 13 + React 19 task manager with authentication, projects, and project-scoped tasks.
 
-## About Laravel
+## What it does
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Users can register, log in, and log out through Laravel Sanctum.
+- Authenticated users can create, edit, and delete projects.
+- Each project can contain multiple tasks.
+- Tasks can be marked completed, edited, deleted, and listed with pagination.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Backend: Laravel 13, PHP 8.3, Sanctum
+- Frontend: React 19, TypeScript, Vite, React Router
+- Database: PostgreSQL with Laravel migrations and seeders
 
-## Learning Laravel
+## Project Structure
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- `app/`, `routes/`, `database/`, `config/`: Laravel backend
+- `frontend/`: standalone React + Vite frontend
+- `docs/`: project documentation, including the database scheme
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Setup
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 1. Install backend dependencies
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Configure environment
 
-## Contributing
+Copy `.env.example` to `.env` if needed, then generate an app key and run migrations:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Make sure your `.env` is configured for PostgreSQL (`DB_CONNECTION=pgsql`) and points to your local database.
 
-## Code of Conduct
+```bash
+php artisan key:generate
+php artisan migrate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+If you want seeded data:
 
-## Security Vulnerabilities
+```bash
+php artisan db:seed
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 3. Install frontend dependencies
 
-## License
+The React app lives in the `frontend/` directory:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+cd frontend
+npm install
+```
+
+### 4. Run the apps
+
+Start the Laravel backend:
+
+```bash
+php artisan serve
+```
+
+In a second terminal, start the React frontend from `frontend/`:
+
+```bash
+cd frontend
+npm run dev
+```
+
+The frontend Vite server runs on port `3000`.
+
+## Useful Commands
+
+- `composer run dev` starts the Laravel backend, queue listener, logs, and the root Vite process used by the Laravel app shell.
+- `composer test` runs the PHP test suite.
+- `cd frontend && npm run build` builds the React app.
+- `cd frontend && npm run lint` runs frontend linting.
+
+## API Overview
+
+All protected routes use `auth:sanctum`.
+
+- `POST /api/register`
+- `POST /api/login`
+- `POST /api/logout`
+- `GET /api/user`
+- `GET /api/projects`
+- `POST /api/projects`
+- `GET /api/projects/{project}`
+- `PUT /api/projects/{project}`
+- `DELETE /api/projects/{project}`
+- `GET /api/projects/{project}/tasks`
+- `POST /api/projects/{project}/tasks`
+- `GET /api/tasks/{task}`
+- `PUT /api/tasks/{task}`
+- `DELETE /api/tasks/{task}`
+
+## Database Docs
+
+See [docs/db_scheme.md](docs/db_scheme.md) for the current schema, relationships, and seed data.
+
+## Notes
+
+- Projects belong to users.
+- Tasks belong to projects and users.
+- Deleting a project cascades to its tasks.
+- Task bodies are optional and can be empty.
