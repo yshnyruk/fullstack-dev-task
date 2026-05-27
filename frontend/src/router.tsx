@@ -3,8 +3,11 @@ import Login from "./views/Login";
 import Projects from "./views/Projects";
 import Register from "./views/Register";
 import NotFound from "./views/NotFound";
+import ProjectForm from "./views/ProjectForm";
 import DefaultLayout from "./components/DefaultLayout";
 import GuestLayout from "./components/GuestLayout";
+import Tasks from "./views/Tasks";
+import TaskForm from "./views/TaskForm";
 
 const router = createBrowserRouter([
     {
@@ -18,7 +21,27 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: <Navigate to="/projects" />
-            }
+            },
+            {
+                path: "/projects/new",
+                element: <ProjectForm key="projectCreate" />
+            },
+            {
+                path: "/projects/:id",
+                element: <ProjectForm key="projectUpdate" />
+            },
+            {
+                path: "/projects/:projectId/tasks",
+                element: <Tasks />
+            },
+            {
+                path: "/projects/:projectId/tasks/new",
+                element: <TaskForm key="taskCreate" />
+            },
+            {
+                path: "/projects/:projectId/tasks/:taskId/edit",
+                element: <TaskForm key="taskUpdate" />
+            },
         ]
     },
     {

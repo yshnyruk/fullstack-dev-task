@@ -4,7 +4,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
 
 export default function DefaultLayout() {
-    const {user, token, setUser, setToken} = useStateContext()
+    const {user, token, notification, setUser, setToken} = useStateContext()
     
     if (!token) {
         return <Navigate to="/login" />
@@ -35,7 +35,7 @@ export default function DefaultLayout() {
             <div style={styles.headerWrapper}>
                 <header style={styles.header}>
                     <div style={styles.headerTitle}>
-                        Header
+                        Developer Task
                     </div>
                     <div style={styles.userInfo}>
                         {user?.name}
@@ -46,6 +46,11 @@ export default function DefaultLayout() {
             <main style={styles.main}>
                 <Outlet />
             </main>
+            {notification && (
+                <div style={styles.notification}>
+                    {notification}
+                </div>
+            )}
         </div>
     )
 }
@@ -110,4 +115,14 @@ const styles: { [key: string]: React.CSSProperties } = {
         textDecoration: "none",
         fontWeight: "500",
     },
+    notification: {
+        position: "fixed",
+        bottom: "1.5rem",
+        right: "1.5rem",
+        backgroundColor: "#22c55e",
+        color: "#ffffff",
+        padding: "0.75rem 1.5rem",
+        borderRadius: "0.5rem",
+        boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+    }
 };
